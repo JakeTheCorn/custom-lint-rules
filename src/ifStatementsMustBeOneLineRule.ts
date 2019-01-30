@@ -1,8 +1,8 @@
-import * as Lint from 'tslint';
-import * as ts from 'typescript';
+import * as Lint from 'tslint'
+import * as ts from 'typescript'
 
 export class Rule extends Lint.Rules.AbstractRule {
-    static FAILURE_STRING = '';
+    static FAILURE_STRING = 'if statement blocks must be no more than one line long'
 
     public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
       return this.applyWithWalker(new Walk(sourceFile, this.getOptions()));
