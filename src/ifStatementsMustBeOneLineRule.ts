@@ -19,4 +19,9 @@ class Walk extends Lint.RuleWalker {
     }
     super.visitIfStatement(node)
   }
+  protected visitCaseClause(node: ts.CaseClause) {
+    // @ts-ignore
+    console.log(node.getText()) // tslint:disable-line
+    super.visitCaseClause(node)
+  }
 }

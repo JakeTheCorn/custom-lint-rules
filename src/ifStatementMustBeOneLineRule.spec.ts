@@ -4,7 +4,9 @@ const rule = 'if-statements-must-be-one-line';
 
 describe('Rule: if-statements-must-be-one-line', () => {
     it('should not fail if the if statement block is only one line long', () => {
-        let src = `if () {
+        let src = `
+        // some other stuff
+        if () {
           // something
         }`;
         const result = helper({ src, rule })
@@ -12,7 +14,16 @@ describe('Rule: if-statements-must-be-one-line', () => {
     });
 
     it('should fail if the if statement block is more than one line long', () => {
-        let src = `if () {
+        let src = `
+        // other stuff
+        switch () {
+            // blah blah
+            case 'Derp':
+                return 'heyyyyy'
+            default:
+        }
+
+        if () {
           // something
           // another thing
         }`;
