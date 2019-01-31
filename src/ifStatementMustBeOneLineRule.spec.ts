@@ -14,8 +14,8 @@ const defaultIf = (
 const defaultSwitch = (
     `
     switch (something) {
-        case 'Derp':
-            return 'YO'
+      case 'Derp':
+        return 'YO'
     }
     `
 )
