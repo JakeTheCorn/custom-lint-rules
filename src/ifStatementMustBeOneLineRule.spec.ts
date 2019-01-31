@@ -2,65 +2,58 @@ import {getFixedResult, helper} from './lintRunner'
 
 const rule = 'if-statements-must-be-one-line';
 
+
+const defaultIf = (
+    `
+    if () {
+        // something
+    }
+    `
+)
+
+const defaultSwitch = (
+    `
+    switch (something) {
+        case 'Derp':
+            return 'YO'
+    }
+    `
+)
+
+const buildSrc = ({
+    If = defaultIf,
+    Switch = defaultSwitch,
+}: {
+    If?: string
+    Switch?: string
+} = {}) => (
+    `
+    'use strict';
+
+    // comment
+
+    ${If}
+
+    ${Switch}
+    `
+)
+
 describe('Rule: if-statements-must-be-one-line', () => {
     it('should not fail if the if statement block is only one line long', () => {
-        let src = `
-        // some other stuff
-        if () {
-          // something
-        }`;
-        const result = helper({ src, rule })
+        const result = helper({ src: buildSrc(), rule })
         expect(result.errorCount).toBe(0)
     });
 
     it('should fail if the if statement block is more than one line long', () => {
-        let src = `
-        // other stuff
-        switch () {
-            // blah blah
-            case 'Derp':
-                return 'heyyyyy'
-            default:
-        }
-
-        if () {
-          // something
-          // another thing
-        }`;
-        const result = helper({ src, rule })
+        const If = (
+            `
+            if () {
+              // something
+              // something else  
+            }
+            `
+        )
+        const result = helper({ src: buildSrc({ If }), rule })
         expect(result.errorCount).toBe(1)
     });
-
-    // it(`testing not failure example`, () => {
-    //     const src = `console.log(1);`;
-    //     const result = helper({src, rule});
-    //     expect(result.errorCount).toBe(0);
-    // });
-
-    // it(`testing position example`, () => {
-    //     const src = `debugger;`;
-    //     const startPosition = src.indexOf('debugger;');
-    //     const endPosition = startPosition + 'debugger;'.length;
-    //     const failure = helper({src, rule}).failures[0];
-
-    //     expect(failure.getStartPosition().getPosition()).toEqual(startPosition);
-    //     expect(failure.getEndPosition().getPosition()).toEqual(endPosition);
-    //     expect(failure.getFailure()).toBe(Rule.FAILURE_STRING);
-    // });
-
-    // it(`testing failure message example`, () => {
-    //     const src = `debugger;`;
-    //     const failure = helper({src, rule}).failures[0];
-
-    //     expect(failure.getFailure()).toBe(Rule.FAILURE_STRING);
-    // });
-
-    // it('testing fixer example', () => {
-    //     const src = `debugger;`;
-    //     const output = ``;
-
-    //     const result = helper({src, rule});
-    //     expect(result.errorCount).toBe(1);
-    //     expect(getFixedResult({src, rule})).toEqual(output);
-    // });
 });
